@@ -34,6 +34,10 @@
             button2 = new Button();
             listBox1 = new ListBox();
             button3 = new Button();
+            button4 = new Button();
+            lblCurrentCategory = new Label();
+            comboBoxCategories = new ComboBox();
+            button5 = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -50,7 +54,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(88, 224);
+            button1.Location = new Point(282, 329);
             button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
             button1.Size = new Size(82, 22);
@@ -82,17 +86,17 @@
             // 
             listBox1.FormattingEnabled = true;
             listBox1.ItemHeight = 15;
-            listBox1.Location = new Point(614, 26);
+            listBox1.Location = new Point(581, 26);
             listBox1.Margin = new Padding(3, 2, 3, 2);
             listBox1.Name = "listBox1";
-            listBox1.Size = new Size(132, 364);
+            listBox1.Size = new Size(163, 364);
             listBox1.TabIndex = 4;
             listBox1.Tag = "listBox1";
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             // 
             // button3
             // 
-            button3.Location = new Point(43, 250);
+            button3.Location = new Point(242, 355);
             button3.Margin = new Padding(3, 2, 3, 2);
             button3.Name = "button3";
             button3.Size = new Size(173, 22);
@@ -101,11 +105,54 @@
             button3.UseVisualStyleBackColor = true;
             button3.Click += buttonLoadFromFolder_Click;
             // 
+            // button4
+            // 
+            button4.Location = new Point(252, 282);
+            button4.Name = "button4";
+            button4.Size = new Size(137, 23);
+            button4.TabIndex = 6;
+            button4.Text = "Create Category";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // lblCurrentCategory
+            // 
+            lblCurrentCategory.AutoSize = true;
+            lblCurrentCategory.Location = new Point(282, 26);
+            lblCurrentCategory.Name = "lblCurrentCategory";
+            lblCurrentCategory.Size = new Size(98, 15);
+            lblCurrentCategory.TabIndex = 7;
+            lblCurrentCategory.Text = "CurrentCategory:";
+            // 
+            // comboBoxCategories
+            // 
+            comboBoxCategories.FormattingEnabled = true;
+            comboBoxCategories.Location = new Point(415, 23);
+            comboBoxCategories.Name = "comboBoxCategories";
+            comboBoxCategories.Size = new Size(121, 23);
+            comboBoxCategories.TabIndex = 8;
+            comboBoxCategories.Text = "Select Category";
+            comboBoxCategories.Click += comboBoxCategories_SelectedIndexChanged;
+            // 
+            // button5
+            // 
+            button5.Location = new Point(611, 395);
+            button5.Name = "button5";
+            button5.Size = new Size(109, 23);
+            button5.TabIndex = 9;
+            button5.Text = "Delete Flashcard";
+            button5.UseVisualStyleBackColor = true;
+            button5.Click += button5_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(button5);
+            Controls.Add(comboBoxCategories);
+            Controls.Add(lblCurrentCategory);
+            Controls.Add(button4);
             Controls.Add(button3);
             Controls.Add(listBox1);
             Controls.Add(button2);
@@ -127,5 +174,9 @@
         private Button button2;
         private ListBox listBox1;
         private Button button3;
+        private Button button4;
+        private Label lblCurrentCategory;
+        private ComboBox comboBoxCategories;
+        private Button button5;
     }
 }
