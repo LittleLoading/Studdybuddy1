@@ -38,6 +38,7 @@
             lblCurrentCategory = new Label();
             comboBoxCategories = new ComboBox();
             button5 = new Button();
+            btnStartQuiz = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             SuspendLayout();
             // 
@@ -54,7 +55,7 @@
             // 
             // button1
             // 
-            button1.Location = new Point(282, 329);
+            button1.Location = new Point(272, 234);
             button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
             button1.Size = new Size(82, 22);
@@ -107,7 +108,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(252, 282);
+            button4.Location = new Point(261, 327);
             button4.Name = "button4";
             button4.Size = new Size(137, 23);
             button4.TabIndex = 6;
@@ -144,11 +145,22 @@
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
             // 
+            // btnStartQuiz
+            // 
+            btnStartQuiz.Location = new Point(289, 415);
+            btnStartQuiz.Name = "btnStartQuiz";
+            btnStartQuiz.Size = new Size(75, 23);
+            btnStartQuiz.TabIndex = 10;
+            btnStartQuiz.Text = "Start Quiz";
+            btnStartQuiz.UseVisualStyleBackColor = true;
+            btnStartQuiz.Click += btnStartQuiz_Click;
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnStartQuiz);
             Controls.Add(button5);
             Controls.Add(comboBoxCategories);
             Controls.Add(lblCurrentCategory);
@@ -178,5 +190,6 @@
         private Label lblCurrentCategory;
         private ComboBox comboBoxCategories;
         private Button button5;
+        private Button btnStartQuiz;
     }
 }

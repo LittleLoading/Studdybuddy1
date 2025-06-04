@@ -6,6 +6,10 @@ using static System.ComponentModel.Design.ObjectSelectorEditor;
 
 namespace projekt
 {
+    /// <summary>
+    /// handles user interactions and displays flashcards
+    /// This form lets users create, view, edit and delete flashcards organized by categories
+    /// </summary>
     public partial class Form1 : Form
     {
         FlashCardManager flashcardManager = new FlashCardManager();
@@ -19,12 +23,19 @@ namespace projekt
             InitializeUI();
         }
 
+        /// <summary>
+        /// Sets up the initial state of the UI when form loads
+        /// Loads categories and resets everything to default
+        /// </summary>
         private void InitializeUI()
         {
             LoadCategoriesToDropdown();
             ResetUI();
         }
 
+        /// <summary>
+        /// Resets all UI elements to their default empty state
+        /// </summary>
         private void ResetUI()
         {
             lblCurrentCategory.Text = "No category selected";
@@ -34,6 +45,10 @@ namespace projekt
             currentImagePath = "";
         }
 
+        /// <summary>
+        /// Handles the upload image button click
+        /// Opens file dialog to let user select an image file for a flashcard
+        /// </summary>
         private void buttonUploadImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -41,6 +56,7 @@ namespace projekt
 
             if (dialog.ShowDialog() == DialogResult.OK)
             {
+                // Check if the selected file is a valid image
                 if (flashcardManager.IsValidImageFile(dialog.FileName))
                 {
                     currentImagePath = dialog.FileName;
@@ -53,13 +69,16 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Saves a new flashcard with the uploaded image and entered answer
+        /// Validates data first, then saves if everything is ok
+        /// </summary>
         private void buttonSaveFlashcard_Click(object sender, EventArgs e)
         {
-            var (isValid, errorMessage) = flashcardManager.ValidateFlashcardData(currentImagePath, textBoxAnswer.Text.Trim());
-
-            if (!isValid)
+            ValidationResult result = flashcardManager.ValidateFlashcardData(currentImagePath, textBoxAnswer.Text.Trim());
+            if (!result.IsValid)
             {
-                MessageBox.Show(errorMessage);
+                MessageBox.Show(result.ErrorMessage);
                 return;
             }
 
@@ -76,19 +95,22 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Handles when user selects a flashcard from the list
+        /// Loads and displays the selected flashcard's image and answer
+        /// </summary>
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listBox1.SelectedItem is Flashcard selectedFlashcard)
             {
                 try
                 {
-                    var (image, answer) = flashcardManager.LoadFlashcardDetails(selectedFlashcard);
-
-                    pictureBox1.Image = image;
-                    textBoxAnswer.Text = answer;
+                    FlashcardDetails details = flashcardManager.LoadFlashcardDetails(selectedFlashcard);
+                    pictureBox1.Image = details.Image;
+                    textBoxAnswer.Text = details.Answer;
                     currentImagePath = flashcardManager.GetImagePath(selectedFlashcard);
 
-                    if (image == null)
+                    if (details.Image == null)
                     {
                         MessageBox.Show("Image file not found.");
                     }
@@ -102,9 +124,13 @@ namespace projekt
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            // Reserved for future functionality
+
         }
 
+        /// <summary>
+        /// Bulk loads flashcards from a selected folder
+        /// Creates flashcards automatically using image filenames as answers
+        /// </summary>
         private void buttonLoadFromFolder_Click(object sender, EventArgs e)
         {
             using (FolderBrowserDialog fbd = new FolderBrowserDialog())
@@ -132,6 +158,9 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Opens the category creation form to create a new 
+        /// </summary>
         private void button4_Click(object sender, EventArgs e)
         {
             using (var form = new CategoryForm())
@@ -144,7 +173,7 @@ namespace projekt
                     {
                         flashcardManager.SetCategory(categoryName);
                         lblCurrentCategory.Text = $"Current category: {categoryName}";
-                        LoadCategoriesToDropdown(); // Refresh dropdown
+                        LoadCategoriesToDropdown(); 
                         RefreshFlashcardList();
                     }
                     catch (Exception ex)
@@ -155,16 +184,20 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Loads all available categories into the dropdown 
+        /// </summary>
         private void LoadCategoriesToDropdown()
         {
             comboBoxCategories.Items.Clear();
-            comboBoxCategories.Items.Add("None"); // Add default item
+            comboBoxCategories.Items.Add("None"); // Default option
 
             try
             {
+
                 string[] categories = flashcardManager.GetAvailableCategories();
                 comboBoxCategories.Items.AddRange(categories);
-                comboBoxCategories.SelectedIndex = 0; // Select "None" by default
+                comboBoxCategories.SelectedIndex = 0; //Select none defaultne
             }
             catch (Exception ex)
             {
@@ -172,6 +205,10 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Handles category selection from dropdown
+        /// Switches to selected category and loads its flashcards
+        /// </summary>
         private void comboBoxCategories_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBoxCategories.SelectedItem is string selectedCategory)
@@ -191,8 +228,6 @@ namespace projekt
                     flashcardManager.SetCategory(selectedCategory);
                     lblCurrentCategory.Text = $"Current category: {selectedCategory}";
                     RefreshFlashcardList();
-
-
                 }
                 catch (Exception ex)
                 {
@@ -201,6 +236,9 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Deletes the currently selected flashcard
+        /// </summary>
         private void button5_Click(object sender, EventArgs e)
         {
             if (listBox1.SelectedItem is Flashcard selectedFlashcard)
@@ -232,7 +270,10 @@ namespace projekt
             }
         }
 
-        // Helper methods for cleaner code
+        /// <summary>
+        /// Refreshes the flashcard list display
+        /// Reloads all flashcards from current category and updates listbox
+        /// </summary>
         private void RefreshFlashcardList()
         {
             try
@@ -250,6 +291,10 @@ namespace projekt
             }
         }
 
+        /// <summary>
+        /// Clears the input fields after saving a flashcard
+        /// Resets image, path and answer text
+        /// </summary>
         private void ClearFlashcardInputs()
         {
             pictureBox1.Image = null;
@@ -257,12 +302,26 @@ namespace projekt
             textBoxAnswer.Text = "";
         }
 
+        /// <summary>
+        /// Clears the flashcard display area
+        /// Used when switching categories or after deletion
+        /// </summary>
         private void ClearFlashcardDisplay()
         {
             listBox1.ClearSelected();
             pictureBox1.Image = null;
             textBoxAnswer.Clear();
             currentImagePath = "";
+        }
+
+        /// <summary>
+        /// Opens the quiz form to start a quiz with current flashcards
+        /// Passes the flashcard manager to the quiz form
+        /// </summary>
+        private void btnStartQuiz_Click(object sender, EventArgs e)
+        {
+            var quizForm = new QuizForm(flashcardManager);
+            quizForm.Show();
         }
     }
 }
